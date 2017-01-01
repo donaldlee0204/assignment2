@@ -2,18 +2,50 @@
 
 // The following is sample code to demonstrate navigation.
 // You need not use it for final app.
-
-function viewRun(runIndex)
-{
-    // Save the desired run to local storage so it can be accessed from View Run page.
-    localStorage.setItem(APP_PREFIX + "-selectedRun", runIndex); 
-    // ... and load the View Run page.
-    location.href = 'viewRun.html';
+var runLists;
+var start_lat;
+var	start_lon;
+var arrival_lat;
+var beginTime;
+var endTime;
+showRunList();
+function showRunList(){
+	runLists = JSON.parse(localStorage.getItem(APP_PREFIX + "-RunList"));
+	for(var i=0; i<runLists.length; i++)
+	{
+		var main = document.getElementById("runsList");
+		var list = document.createElement("li");
+		list.className="mdl-list__item mdl-list__item--two-line";
+		list.onclick = function(){initView(i-1)};
+		console.log(i);
+		var span = document.createElement("span");
+		var span_m = document.createElement("span");
+		var text = document.createTextNode("Run"+ i);
+		span_m.appendChild(text);
+		span.appendChild(span_m);
+		list.appendChild(span);
+		main.appendChild(list);
+	}
 }
 
-function Run(begin, loacations){
-	this.loacations = loacations;
-	this.begin = begin;
-	this.end;
-
+function Run(start, arrival, beginTime, endTime){
+	this.start = start;
+	this.arrival = arrival;
+	this.beginTime = beginTime;
+	this.endTime = endTime;
+	this.getDistance = function (){
+		var distance = google.maps.geometry.spherical.computeDistanceBetween(start.getPosition(), arrival.getPosition());
+		return distance;
+	}
+	this.getRunTime = function (){
+		var time = endTime.getTime() - beginTime.getTime();
+		return time;
+	}
 } 
+
+function initView(index){
+	console.log("save" + index);
+	localStorage.setItem("index", index);
+	location.href='viewRun.html';
+}
+
