@@ -3,11 +3,6 @@
 // The following is sample code to demonstrate navigation.
 // You need not use it for final app.
 var runLists;
-var start_lat;
-var	start_lon;
-var arrival_lat;
-var beginTime;
-var endTime;
 showRunList();
 function showRunList(){
 	runLists = JSON.parse(localStorage.getItem(APP_PREFIX + "-RunList"));
